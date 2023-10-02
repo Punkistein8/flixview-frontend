@@ -18,6 +18,8 @@ export class ProfilesManagementComponent {
 
   cantAddProfile = true;
 
+  changingPlan: boolean = false;
+
   listOfPlans: any[] = [];
 
   listOfProfiles: any[] = [];
@@ -98,8 +100,9 @@ export class ProfilesManagementComponent {
         }
       },
       (err) => {
-        this.toastr.error(err.error.message, 'Error');
         console.log(err);
+        this.toastr.error(err.error.message, 'Error');
+        this.cantAddProfile = true;
       }
     );
   }
@@ -111,6 +114,7 @@ export class ProfilesManagementComponent {
   }
 
   checkIfUserCanAddProfile() {
+    console.log(this.cantAddProfile);
     this.modalTitle = 'Add new profile';
     this.profilesService
       .checkIfUserCanAddProfile(this.authenticatedUser)
@@ -135,6 +139,7 @@ export class ProfilesManagementComponent {
 
   changePlan() {
     this.toastr.info('Change Plan', 'Info');
+    this.changingPlan = true;
     this.getAllPlans();
     this.modalTitle = 'Change Plan';
   }

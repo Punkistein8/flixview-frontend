@@ -20,7 +20,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a
             *ngIf="cantAddProfile"
             class="nav-link disabled"
@@ -51,7 +51,7 @@
             routerLink="/profiles-management"
             >Movies</a
           >
-        </li>
+        </li> -->
         <li class="nav-item">
           <a
             class="nav-link"
@@ -112,7 +112,7 @@
         <p class="card-text">
           <span class="badge bg-success">{{ profile.state_pro }}</span>
         </p>
-        <a href="#" class="btn btn-primary">Use this profile</a>
+        <a routerLink="/movies-list" class="btn btn-primary">Use this profile</a>
       </div>
     </div>
 
