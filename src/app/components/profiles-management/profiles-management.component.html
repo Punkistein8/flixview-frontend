@@ -3,7 +3,7 @@
   data-bs-theme="dark"
 >
   <div class="container-fluid">
-    <a class="navbar-brand">
+    <a class="navbar-brand" routerLink="/profiles-management">
       <i class="fa-solid fa-film"></i>
       Flixview
     </a>
@@ -21,10 +21,60 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a
+            *ngIf="cantAddProfile"
+            class="nav-link disabled"
+            aria-disabled="true"
+            aria-current="page"
+            >Home</a
+          >
+          <a
+            *ngIf="!cantAddProfile"
+            class="nav-link"
+            aria-current="page"
+            routerLink="/profiles-management"
+            >Home</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+          <a
+            *ngIf="cantAddProfile"
+            class="nav-link disabled"
+            aria-disabled="true"
+            href="#"
+            >Movies</a
+          >
+          <a
+            *ngIf="!cantAddProfile"
+            class="nav-link"
+            href="#"
+            routerLink="/profiles-management"
+            >Movies</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="#"
+            *ngIf="cantAddProfile"
+            data-bs-toggle="modal"
+            data-bs-target="#modalAddProfile"
+            (click)="checkIfUserCanAddProfile()"
+          >
+            <span class="badge bg-danger">Choose a plan first!</span>
+          </a>
+          <a
+            class="nav-link"
+            href="#"
+            *ngIf="!cantAddProfile"
+            data-bs-toggle="modal"
+            data-bs-target="#modalAddProfile"
+            (click)="changePlan()"
+          >
+            <span class="badge bg-success"
+              >{{ authenticatedUser.fk_id_pla.type }} plan</span
+            >
+          </a>
         </li>
       </ul>
 
@@ -55,19 +105,24 @@
 
 <div class="container my-5 mx-auto">
   <div class="row">
-    <div class="card col-3">
-      <div class="card-header">Content Type</div>
+    <div *ngFor="let profile of listOfProfiles" class="card col-3 mb-5">
+      <div class="card-header">{{ profile.contentType_pro }}</div>
       <div class="card-body">
-        <h5 class="card-title">Profile Name</h5>
+        <h5 class="card-title">{{ profile.name }}</h5>
         <p class="card-text">
-          <span class="badge bg-success">Activo</span>
+          <span class="badge bg-success">{{ profile.state_pro }}</span>
         </p>
         <a href="#" class="btn btn-primary">Use this profile</a>
       </div>
     </div>
+
     <div
       class="card col-3 cursor-wait"
-      style="cursor: pointer; background-color: rgba(64, 64, 64, 0.468)"
+      style="
+        cursor: pointer;
+        background-color: rgba(64, 64, 64, 0.468);
+        height: 200px;
+      "
     >
       <div
         data-bs-toggle="modal"
@@ -99,7 +154,7 @@
           id="modalAddProfileLabel"
           *ngIf="!cantAddProfile"
         >
-          Add new profile
+          {{ modalTitle }}
         </h1>
         <h1
           class="modal-title fs-5"
@@ -175,11 +230,37 @@
           </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-      </div>
+      <form [formGroup]="newProfileForm" (ngSubmit)="addNewProfile()">
+        <div *ngIf="!cantAddProfile" class="modal-body">
+          <div class="container text-center">
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">
+                <i class="fa-solid fa-user"></i>
+                &nbsp; Profile Name
+              </span>
+              <input
+                type="text"
+                formControlName="name_pro"
+                class="form-control"
+                placeholder="Jon Doe"
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-success">Save</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

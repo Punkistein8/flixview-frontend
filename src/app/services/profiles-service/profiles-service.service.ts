@@ -20,4 +20,11 @@ export class ProfilesServiceService {
     };
     return this.http.post<any>(this.url + '/check-if-can-add', newUser);
   }
+
+  getProfilesListByUser(user: any): Observable<any> {
+    const usuarioBuscar: any = {
+      id_use: user.id_use,
+    };
+    return this.http.post<any>(this.url + '/get-by-id', usuarioBuscar);
+  }
 }
