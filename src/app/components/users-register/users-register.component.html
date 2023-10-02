@@ -1,1 +1,117 @@
-<p>users-register works!</p>
+<div class="container" style="margin-top: 175px">
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h3 class="text-center titulo">Register</h3>
+        </div>
+      </div>
+
+      <div class="rounded card mt-2 p-2">
+        <form [formGroup]="newUserForm" (ngSubmit)="registerUser()">
+          <div class="mb-3">
+            <input
+              formControlName="email"
+              type="email"
+              class="form-control form-control-lg"
+              id="nameUserflix"
+              aria-describedby="emailHelp"
+              placeholder="Email"
+            />
+            <div
+              class="text-danger"
+              *ngIf="
+                newUserForm.get('email')?.invalid &&
+                newUserForm.get('email')?.touched
+              "
+            >
+              <span> Email <strong>is required</strong> </span>
+            </div>
+            <!-- correct email -->
+            <div
+              class="text-danger"
+              *ngIf="
+                newUserForm.get('email')?.errors?.['email'] &&
+                newUserForm.get('email')?.touched
+              "
+            >
+              <span> Email format <strong>is not valid</strong> </span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <input
+              formControlName="password"
+              type="password"
+              class="form-control form-control-lg"
+              id="passwordUserflix"
+              placeholder="Password"
+            />
+            <!-- validate password -->
+            <div
+              class="text-danger"
+              *ngIf="
+                newUserForm.get('password')?.invalid &&
+                newUserForm.get('password')?.touched
+              "
+            >
+              <span> Password <strong>is required</strong> </span>
+            </div>
+
+            <!-- long validation -->
+            <div
+              class="text-danger"
+              *ngIf="
+                newUserForm.get('password')?.errors?.['minlength'] &&
+                newUserForm.get('password')?.touched
+              "
+            >
+              <span>
+                Password <strong>must be at least 4 characters</strong>
+              </span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <input
+              formControlName="age"
+              type="number"
+              class="form-control form-control-lg"
+              id="age"
+              aria-describedby="emailHelp"
+              placeholder="Age"
+            />
+            <div
+              class="text-danger"
+              *ngIf="
+                newUserForm.get('age')?.invalid &&
+                newUserForm.get('age')?.touched
+              "
+            >
+              <span> Age <strong>is required</strong> </span>
+            </div>
+            <!-- correct age number -->
+            <div
+              class="text-danger"
+              *ngIf="
+                newUserForm.get('age')?.errors?.['min'] &&
+                newUserForm.get('age')?.touched
+              "
+            >
+              <span> Age <strong>must be greater than 13</strong> </span>
+            </div>
+          </div>
+          <!-- dont have an account? -->
+          <div class="mb-3">
+            <a routerLink="users-login" class="text-decoration-none"
+              >Already have an account?</a
+            >
+          </div>
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-lg float-end btn-success">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

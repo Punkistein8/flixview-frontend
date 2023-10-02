@@ -1,1 +1,67 @@
-<p>users-login works!</p>
+<div class="container" style="margin-top: 175px">
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h3 class="text-center titulo">Login</h3>
+        </div>
+      </div>
+
+      <div class="rounded card mt-2 p-2">
+        <form [formGroup]="validateLoginForm" (ngSubmit)="onLogin()">
+          <div class="mb-3">
+            <input
+              formControlName="email"
+              type="email"
+              class="form-control form-control-lg"
+              id="emailUserflix"
+              aria-describedby="emailHelp"
+              placeholder="Email"
+            />
+            <div
+              class="text-danger"
+              *ngIf="
+                validateLoginForm.get('email')?.invalid &&
+                validateLoginForm.get('email')?.touched
+              "
+            >
+              <span> Email <strong>is required</strong> </span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <input
+              formControlName="password"
+              type="password"
+              class="form-control form-control-lg"
+              id="passwordUserflix"
+              placeholder="Password"
+            />
+            <div
+              class="text-danger"
+              *ngIf="
+                validateLoginForm.get('password')?.invalid &&
+                validateLoginForm.get('password')?.touched
+              "
+            >
+              <span> Password <strong>is required</strong> </span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <a routerLink="users-register" class="text-decoration-none">
+              Dont have an account?
+            </a>
+          </div>
+          <div class="d-grid gap-2">
+            <button
+              type="submit"
+              class="btn btn-lg float-end btn-success"
+              [disabled]="validateLoginForm.invalid"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

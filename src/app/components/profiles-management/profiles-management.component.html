@@ -1,1 +1,185 @@
-<p>profiles-management works!</p>
+<nav
+  class="navbar navbar-expand-lg bg-body-tertiary bg-dark"
+  data-bs-theme="dark"
+>
+  <div class="container-fluid">
+    <a class="navbar-brand">
+      <i class="fa-solid fa-film"></i>
+      Flixview
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+      </ul>
+
+      <div class="dropstart">
+        <li
+          class="btn btn-outline-success dropdown dropdown-toggle drop-start"
+          type="submit"
+          data-bs-toggle="dropdown"
+        >
+          <i class="fa-regular fa-user"></i>
+          &nbsp; {{ authenticatedUser.email }}
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a class="dropdown-item text-danger" (click)="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Log Out
+              </a>
+            </li>
+          </ul>
+        </li>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container my-5 mx-auto">
+  <div class="row">
+    <div class="card col-3">
+      <div class="card-header">Content Type</div>
+      <div class="card-body">
+        <h5 class="card-title">Profile Name</h5>
+        <p class="card-text">
+          <span class="badge bg-success">Activo</span>
+        </p>
+        <a href="#" class="btn btn-primary">Use this profile</a>
+      </div>
+    </div>
+    <div
+      class="card col-3 cursor-wait"
+      style="cursor: pointer; background-color: rgba(64, 64, 64, 0.468)"
+    >
+      <div
+        data-bs-toggle="modal"
+        data-bs-target="#modalAddProfile"
+        (click)="checkIfUserCanAddProfile()"
+        class="card-body d-flex justify-content-center align-items-center flex-column gap-4 text-light"
+      >
+        <i class="fa-solid fa-circle-plus fa-2xl" style="color: #ffffff"></i>
+        Add new profile
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal modal-xl fade"
+  style="width: 100%"
+  id="modalAddProfile"
+  tabindex="-1"
+  aria-labelledby="modalAddProfileLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1
+          class="modal-title fs-5"
+          id="modalAddProfileLabel"
+          *ngIf="!cantAddProfile"
+        >
+          Add new profile
+        </h1>
+        <h1
+          class="modal-title fs-5"
+          id="modalAddProfileLabel"
+          *ngIf="cantAddProfile"
+        >
+          Choose a plan to continue
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="container text-center">
+          <div class="row">
+            <div
+              *ngFor="let plan of listOfPlans"
+              class="col-3 card"
+              style="width: 18rem"
+            >
+              <div class="card-body">
+                <div class="card-title">
+                  <h1>{{ plan.type }}</h1>
+                </div>
+                <div class="card-text">
+                  <p *ngIf="plan.type === 'Basic'" class="card-text pb-4">
+                    <span class="badge bg-info mt-4">2 screens</span>
+                    <br />
+                    <span class="badge bg-warning mb-4"
+                      >$ {{ plan.price_pla }}</span
+                    >
+                    <br />
+                    The most basic plan of all, you can only watch on 2 screens
+                  </p>
+
+                  <p
+                    *ngIf="plan.type === 'Intermediate'"
+                    class="card-text pb-4"
+                  >
+                    <span class="badge bg-info mt-4">3 screens</span>
+                    <br />
+                    <span class="badge bg-warning mb-4"
+                      >$ {{ plan.price_pla }}</span
+                    >
+                    <br />
+                    The intermediate plan, you can watch on 3 screens
+                  </p>
+
+                  <p *ngIf="plan.type === 'Advanced'" class="card-text pb-4">
+                    <span class="badge bg-info mt-4">5 screens</span>
+                    <br />
+                    <span class="badge bg-warning mb-4"
+                      >$ {{ plan.price_pla }}</span
+                    >
+                    <br />
+                    The most complete plan, you can watch on 5 screens
+                  </p>
+                </div>
+                <div class="d-grid gap-2">
+                  <button
+                    class="btn btn-success"
+                    type="button"
+                    (click)="assignPlanToUser(plan.id)"
+                  >
+                    Select this plan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
