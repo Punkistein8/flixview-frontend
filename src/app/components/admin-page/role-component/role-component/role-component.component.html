@@ -1,0 +1,92 @@
+<div style="width: 1000px" class="container my-5">
+  <div class="d-flex justify-content-center flex-column align-items-center">
+    <h1 style="color: white" class="mt-5">List of Roles</h1>
+    <div class="d-grid gap-2 w-50 mb-2">
+      <button
+        class="btn btn-success"
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#modalNewRole"
+      >
+        <i class="fa-solid fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center">
+    <table class="table table-striped" style="width: 50%">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Type</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let role of roles">
+          <td>{{ role.id }}</td>
+          <td>{{ role.type }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm">
+              <i class="fa-solid fa-pen-to-square" style="color: #ffffff"></i>
+            </button>
+            &nbsp;
+            <button class="btn btn-danger btn-sm">
+              <i class="fa-solid fa-delete-left"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="modalNewRole"
+  tabindex="-1"
+  aria-labelledby="modalNewRole"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form [formGroup]="newRoleForm" (ngSubmit)="addRole()">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modalNewRole">Add New Role</h1>
+        </div>
+        <div class="modal-body">
+          <input
+            formControlName="type"
+            type="text"
+            class="form-control mb-3"
+            placeholder="Type"
+          />
+
+          <!-- error validator -->
+          <div *ngIf="newRoleForm.get('type')?.invalid">
+            <div
+              *ngIf="
+                newRoleForm.get('type')?.hasError('required') &&
+                newRoleForm.get('type')?.touched
+              "
+              class="alert alert-danger"
+            >
+              Type is required
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            id="closeModalBtn"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-success">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

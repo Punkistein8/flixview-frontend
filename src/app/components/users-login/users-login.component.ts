@@ -41,11 +41,15 @@ export class UsersLoginComponent {
     };
     this.userLoginService.onLogin(user).subscribe(
       (res) => {
-        // console.log(res);
-        this.toastr.success(res.message, 'Success');
-        this.router.navigate(['/profiles-management']);
         console.log(res);
+        this.toastr.success(res.message, 'Success');
         localStorage.setItem('user', JSON.stringify(res.data));
+        const { type } = res.data.fk_id_rol;
+        if (type === 'Admin') {
+          this.router.navigate(['/admin-page']);
+        } else {
+          this.router.navigate(['/profiles-management']);
+        }
       },
       (err) => {
         this.toastr.error(err.error.message, 'Error');

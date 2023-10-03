@@ -16,6 +16,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { RoleComponentComponent } from './components/admin-page/role-component/role-component/role-component.component';
+import { PlanComponentComponent } from './components/admin-page/plan-component/plan-component/plan-component.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     AccountManagementComponent,
     PaymentManagementComponent,
     AdminPageComponent,
+    RoleComponentComponent,
+    PlanComponentComponent,
   ],
   imports: [
     BrowserModule,
