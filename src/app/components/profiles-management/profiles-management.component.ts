@@ -16,17 +16,16 @@ import { Profile } from 'src/app/models/Profile';
 export class ProfilesManagementComponent {
   authenticatedUser: any = {};
 
-  cantAddProfile = true;
-
-  changingPlan: boolean = false;
-
   listOfPlans: any[] = [];
 
   listOfProfiles: any[] = [];
 
-  modalTitle = 'Add new profile';
-
   newProfileForm: FormGroup;
+
+  // condicionales para mostrar los modales
+  tienePlan: boolean = false;
+
+  tituloModal = '';
 
   constructor(
     private authService: UsersLoginService,
@@ -36,11 +35,11 @@ export class ProfilesManagementComponent {
     private planService: PlanServiceService,
     private usersRegisterService: UsersRegisterService
   ) {
-    this.authService.isAuthenticated();
-
-    // OJO
-    this.authenticatedUser = this.authService.getAuthenticatedUser();
-    // OJO
+    this.permitirEstarAqui();
+    //seteando el usuario de la bd en el local storage
+    this.setUpdatedAuthenticatedUser();
+    //obteniendo el usuario autenticado
+    this.authenticatedUser = this.getAuthenticatedUser();
 
     this.newProfileForm = new FormGroup({
       name_pro: new FormControl('', [
@@ -48,19 +47,31 @@ export class ProfilesManagementComponent {
         Validators.minLength(4),
       ]),
     });
-
-    this.getProfilesListByUser();
   }
 
-  ngOnInit() {
+  permitirEstarAqui() {
     if (!this.authService.isAuthenticated()) {
       // redirect to login view
       this.router.navigate(['/users-login']);
       this.toastr.error('You must login first!', 'Error');
-    } else {
-      this.authenticatedUser = this.authService.getAuthenticatedUser();
-      this.checkIfUserCanAddProfile();
     }
+  }
+
+  ngOnInit() {
+    //obteniendo los perfiles de este usuario
+    this.getProfilesListByUser();
+    //obteniendo todos los planes
+    this.getAllPlans();
+    //saber si tiene plan
+    this.saberSiTienePlan();
+  }
+
+  getAuthenticatedUser() {
+    return this.authService.getAuthenticatedUser();
+  }
+
+  setUpdatedAuthenticatedUser(): any {
+    this.authService.setUpdatedAuthenticatedUser();
   }
 
   getProfilesListByUser() {
@@ -70,15 +81,64 @@ export class ProfilesManagementComponent {
         (res) => {
           if (res.data.length > 0) {
             this.listOfProfiles = res.data;
+            console.log('Profiles found for this user', this.listOfProfiles);
           } else {
-            console.log("You don't have profiles yet!");
+            console.log('No profiles found for this user', this.listOfProfiles);
           }
-          console.log('Profiles: ', this.listOfProfiles);
         },
         (err) => {
-          console.log('ERRORRR ->', err);
+          console.log('Error al obtener los perfiles de este usuario ->', err);
         }
       );
+  }
+
+  getAllPlans() {
+    this.planService.getAllPlans().subscribe(
+      (res) => {
+        if (res.length > 0) {
+          this.listOfPlans = res;
+          console.log('Plans found', this.listOfPlans);
+        } else {
+          console.log('No plans found', this.listOfPlans);
+        }
+      },
+      (err) => {
+        console.log('Error al obtener los planes ->', err);
+      }
+    );
+  }
+
+  saberSiTienePlan(): any {
+    const user = localStorage.getItem('user');
+    if (!user) {
+      return null;
+    }
+    const { fk_id_pla } = JSON.parse(user);
+
+    if (fk_id_pla != null) {
+      this.tienePlan = true;
+    } else {
+      this.tienePlan = false;
+    }
+  }
+
+  clickModalPlan() {
+    this.saberSiTienePlan();
+    if (this.tienePlan) {
+      this.tituloModal = 'Change plan';
+    } else {
+      this.tituloModal = 'Choose plan';
+    }
+  }
+
+  clickModalProfile() {
+    this.saberSiTienePlan();
+    if (this.tienePlan) {
+      this.tituloModal = 'Add profile';
+    } else {
+      this.tituloModal = 'Choose a plan first before adding a profile!';
+      this.toastr.info("You don't have a plan yet!", 'Info');
+    }
   }
 
   addNewProfile() {
@@ -92,7 +152,6 @@ export class ProfilesManagementComponent {
       (res) => {
         if (!res.error) {
           this.toastr.success(res.message, 'Success');
-          this.cantAddProfile = false;
           this.getProfilesListByUser();
           // setTimeout(() => {
           //   window.location.reload();
@@ -100,9 +159,7 @@ export class ProfilesManagementComponent {
         }
       },
       (err) => {
-        console.log(err);
         this.toastr.error(err.error.message, 'Error');
-        this.cantAddProfile = true;
       }
     );
   }
@@ -111,53 +168,6 @@ export class ProfilesManagementComponent {
     this.authService.logout();
     this.router.navigate(['/users-login']);
     this.toastr.success('User logged out successfully!', 'Success');
-  }
-
-  checkIfUserCanAddProfile() {
-    console.log(this.cantAddProfile);
-    this.modalTitle = 'Add new profile';
-    this.profilesService
-      .checkIfUserCanAddProfile(this.authenticatedUser)
-      .subscribe(
-        (res) => {
-          // console.log(res);
-          if (!res.error) {
-            // this.router.navigate(['/profiles-add']);
-            // this.toastr.success(res.message, 'Success');
-            this.cantAddProfile = false;
-          } else {
-            this.toastr.info(res.message, 'Info');
-            this.cantAddProfile = true;
-            this.getAllPlans();
-          }
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-  }
-
-  changePlan() {
-    this.toastr.info('Change Plan', 'Info');
-    this.changingPlan = true;
-    this.getAllPlans();
-    this.modalTitle = 'Change Plan';
-  }
-
-  getAllPlans() {
-    this.planService.getAllPlans().subscribe(
-      (res) => {
-        if (res.length > 0) {
-          this.listOfPlans = res;
-        } else {
-          this.toastr.error(res.message, 'Error');
-        }
-        // console.log(this.listOfPlans);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
   }
 
   assignPlanToUser(fk_id_pla: number) {
@@ -169,18 +179,16 @@ export class ProfilesManagementComponent {
       (res) => {
         if (!res.error) {
           this.toastr.success(res.message, 'Success');
-          this.cantAddProfile = false;
           localStorage.setItem('user', JSON.stringify(res.data));
           setTimeout(() => {
             window.location.reload();
           }, 500);
         } else {
           this.toastr.error(res.message, 'Error');
-          this.cantAddProfile = true;
         }
       },
       (err) => {
-        console.log(err);
+        this.toastr.error(err, 'Error');
       }
     );
   }
