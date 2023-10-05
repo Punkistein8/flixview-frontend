@@ -4,16 +4,16 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class PlanServiceService {
-  url = 'http://localhost:8080/api/v1/plans';
+export class UserflixServiceService {
+  url = 'http://localhost:8080/api/v1/flix-users';
 
   constructor(private http: HttpClient) {}
 
-  getAllPlans(): Observable<any> {
+  getAllUsers(): Observable<any> {
     return this.http.get<any>(this.url);
   }
 
-  addPlan(plan: any): Observable<any> {
-    return this.http.post<any>(this.url, plan);
+  logicallyDeleteUser(id: number, user: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/${id}`, user);
   }
 }

@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { RoleComponentComponent } from './components/admin-page/role-component/role-component/role-component.component';
 import { PlanComponentComponent } from './components/admin-page/plan-component/plan-component/plan-component.component';
+import { UserflixComponentComponent } from './components/admin-page/userflix-component/userflix-component/userflix-component.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { PlanComponentComponent } from './components/admin-page/plan-component/p
     AdminPageComponent,
     RoleComponentComponent,
     PlanComponentComponent,
+    UserflixComponentComponent,
   ],
   imports: [
     BrowserModule,

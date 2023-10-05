@@ -46,11 +46,15 @@
         </a>
       </li>
       <li>
-        <a routerLink="/admin-page" class="nav-link text-white">
+        <a
+          (click)="loadComponent('C')"
+          routerLink="/admin-page"
+          class="nav-link text-white"
+        >
           <svg class="bi pe-none me-2" width="16" height="16">
             <use xlink:href="#table" />
           </svg>
-          Orders
+          Users
         </a>
       </li>
       <li>

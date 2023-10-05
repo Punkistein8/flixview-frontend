@@ -1,27 +1,24 @@
-# Flixview
+# FLixview-frontend (Angular + Node + Bootstrap + Toastr + ...)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.3.
+Este es el frontend de la aplicación construida con Angular, Node, Bootstrap5, y demás tecnologías frontend.
 
-## Development server
+## Versiones
+Angular CLI 16.2.3
+Node 18.16.0
+NPM 9.5.1
+Bootstrap v5
+Toastr x.x.x
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Instalación
+1. El proyecto no contiene variables de entorno, simplemente se necesita tener el ambiente a punto con las versiones especificadas.
 
-## Code scaffolding
+2. El script para incializar el proyecto puede ser "ng serve" o "npm run start" (revisar package.json)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Uso
+1. Una vez ejecutada la aplicación se mostrará la pantalla de login, se puede iniciar sesión de primeras (si se siguió el readme del backend) con las credenciales "admin@a" y password "1234" para entrar al módulo de administradores.
 
-## Build
+2. Se pueden crear nuevos usuarios
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+3. Si se ejecutó primero todo el readme del backend, no tendrá problemas en la ejecución de la aplicación.
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- Creado por Henry Guerrero 3/10/2023

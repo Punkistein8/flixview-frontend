@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UsersLoginService } from 'src/app/services/users-login/users-login.service';
 import { RoleComponentComponent } from './role-component/role-component/role-component.component';
 import { PlanComponentComponent } from './plan-component/plan-component/plan-component.component';
+import { UserflixComponentComponent } from './userflix-component/userflix-component/userflix-component.component';
 @Component({
   selector: 'app-admin-page',
   templateUrl: './admin-page.component.html',
@@ -53,8 +54,12 @@ export class AdminPageComponent {
           this.resolver.resolveComponentFactory(PlanComponentComponent)
         );
         break;
-      default:
+      case 'C':
+        this.dynamicComponentContainer?.createComponent(
+          this.resolver.resolveComponentFactory(UserflixComponentComponent)
+        );
         break;
+      default:
     }
   }
 }

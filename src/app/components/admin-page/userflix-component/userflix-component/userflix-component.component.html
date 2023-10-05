@@ -1,0 +1,132 @@
+<div style="width: 1000px" class="container my-5">
+  <div class="d-flex justify-content-center flex-column align-items-center">
+    <h1 style="color: white" class="mt-5">List of Users</h1>
+    <!-- <div class="d-grid gap-2 w-50 mb-2">
+      <button
+        class="btn btn-success"
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#modalViewProfilesByUser"
+      >
+        <i class="fa-solid fa-plus"></i>
+      </button>
+    </div> -->
+  </div>
+  <div class="d-flex justify-content-center">
+    <table class="table table-striped" style="width: 50%">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Email</th>
+          <th scope="col">State</th>
+          <th scope="col">Age</th>
+          <th scope="col">Plans</th>
+          <th scope="col">Roles</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id_use }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            {{ user.state_use }}
+          </td>
+          <td>{{ user.age }}</td>
+          <td>{{ user.fk_id_pla == null ? "N/A" : user.fk_id_pla.type }}</td>
+          <td>{{ user.fk_id_rol.type }}</td>
+          <td class="d-flex">
+            <button
+              (click)="getProfilesListByUser(user.id_use)"
+              class="btn btn-primary btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#modalViewProfilesByUser"
+            >
+              <i class="fa-solid fa-eye"></i>
+            </button>
+            &nbsp;
+            <button
+              *ngIf="user.state_use == 'Active'"
+              (click)="logicallyDeleteUser(user.id_use)"
+              class="btn btn-danger btn-sm"
+            >
+              <i class="fa-solid fa-delete-left"></i>
+            </button>
+
+            <button
+              *ngIf="user.state_use == 'Inactive'"
+              (click)="logicallyActivateUser(user.id_use)"
+              class="btn btn-success btn-sm"
+            >
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="modalViewProfilesByUser"
+  tabindex="-1"
+  aria-labelledby="modalViewProfilesByUser"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modalViewProfilesByUser">
+          Profiles by User
+        </h1>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Name</th>
+              <th scope="col">Content</th>
+              <th scope="col">State</th>
+              <th scope="col">User</th>
+              <th scope="col">Plan</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="profilesByUser.length > 0">
+            <tr *ngFor="let profile of profilesByUser">
+              <th scope="row">{{ profile.id_pro }}</th>
+              <td>{{ profile.name }}</td>
+              <td>{{ profile.contentType_pro }}</td>
+              <td>{{ profile.state_pro }}</td>
+              <td>{{ profile.fkiduse.email }}</td>
+              <td>
+                {{
+                  profile.fkiduse.fk_id_pla == null
+                    ? "N/A"
+                    : profile.fkiduse.fk_id_pla.type
+                }}
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="profilesByUser.length == 0">
+            <tr>
+              <td colspan="6" class="text-center">No profiles found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+          id="closeModalBtn"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

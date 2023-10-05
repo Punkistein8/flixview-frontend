@@ -1,1 +1,114 @@
-<p>plan-component works!</p>
+<div style="width: 1000px" class="container my-5">
+  <div class="d-flex justify-content-center flex-column align-items-center">
+    <h1 style="color: white" class="mt-5">List of Plans</h1>
+    <div class="d-grid gap-2 w-50 mb-2">
+      <button
+        class="btn btn-success"
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#modalNewPlan"
+      >
+        <i class="fa-solid fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center">
+    <table class="table table-striped" style="width: 50%">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Type</th>
+          <th scope="col">Price</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let plan of plans">
+          <td>{{ plan.id }}</td>
+          <td>{{ plan.type }}</td>
+          <td>{{ plan.price_pla }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm">
+              <i class="fa-solid fa-pen-to-square" style="color: #ffffff"></i>
+            </button>
+            &nbsp;
+            <button class="btn btn-danger btn-sm">
+              <i class="fa-solid fa-delete-left"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="modalNewPlan"
+  tabindex="-1"
+  aria-labelledby="modalNewPlan"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form [formGroup]="newPlanForm" (ngSubmit)="addPlan()">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modalNewPlan">Add New Plan</h1>
+        </div>
+        <div class="modal-body">
+          <input
+            formControlName="type"
+            type="text"
+            class="form-control mb-3"
+            placeholder="Type"
+          />
+
+          <!-- error validator -->
+          <div *ngIf="newPlanForm.get('type')?.invalid">
+            <div
+              *ngIf="
+                newPlanForm.get('type')?.hasError('required') &&
+                newPlanForm.get('type')?.touched
+              "
+              class="alert alert-danger"
+            >
+              Type is required
+            </div>
+          </div>
+
+          <input
+            formControlName="price_pla"
+            type="number"
+            class="form-control mb-3"
+            placeholder="Price"
+          />
+
+          <!-- error validator -->
+          <div *ngIf="newPlanForm.get('price_pla')?.invalid">
+            <div
+              *ngIf="
+                newPlanForm.get('price_pla')?.hasError('required') &&
+                newPlanForm.get('price_pla')?.touched
+              "
+              class="alert alert-danger"
+            >
+              Price is required
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            id="closeModalBtn"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-success">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
