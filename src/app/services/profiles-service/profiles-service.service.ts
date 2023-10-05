@@ -27,4 +27,10 @@ export class ProfilesServiceService {
     };
     return this.http.post<any>(this.url + '/get-by-id', usuarioBuscar);
   }
+
+  deleteProfileById(id_pro: any): Observable<any> {
+    return this.http.delete<any>(this.url + '/remove-by-id', {
+      body: id_pro,
+    });
+  }
 }

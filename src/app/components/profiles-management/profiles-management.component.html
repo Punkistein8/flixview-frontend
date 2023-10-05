@@ -1,6 +1,7 @@
 <nav
   class="navbar navbar-expand-lg bg-body-tertiary bg-dark"
   data-bs-theme="dark"
+  style="position: sticky; top: 0; z-index: 1000"
 >
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/profiles-management">
@@ -88,9 +89,13 @@
           &nbsp; {{ authenticatedUser.email }}
           <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-item" (click)="setUpdatedAuthenticatedUser()"
-                >updateUser</a
+              <a
+                class="dropdown-item"
+                (click)="setUpdatedAuthenticatedUser()"
+                routerLink="/account-management"
               >
+                Manage Account
+              </a>
             </li>
             <li><a class="dropdown-item" href="#">Another action</a></li>
             <li><hr class="dropdown-divider" /></li>
@@ -116,9 +121,18 @@
         <p class="card-text">
           <span class="badge bg-success">{{ profile.state_pro }}</span>
         </p>
-        <a routerLink="/movies-list" class="btn btn-primary"
-          >Use this profile</a
-        >
+        <div class="d-flex justify-content-between">
+          <a routerLink="/movies-list" class="btn btn-primary"
+            >Use this profile</a
+          >
+          <button
+            class="btn btn-danger hint--error hint--top hint--rounded"
+            data-hint="Delete this profile"
+            (click)="deleteProfileById(profile.id_pro)"
+          >
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -165,7 +179,14 @@
           aria-label="Close"
         ></button>
       </div>
-      <div *ngIf="tituloModal == 'Change plan' || tituloModal == 'Choose plan' || tienePlan == false" class="modal-body">
+      <div
+        *ngIf="
+          tituloModal == 'Change plan' ||
+          tituloModal == 'Choose plan' ||
+          tienePlan == false
+        "
+        class="modal-body"
+      >
         <div class="container text-center">
           <div class="row">
             <div
@@ -211,14 +232,39 @@
                     The most complete plan, you can watch on 5 screens
                   </p>
                 </div>
-                <div class="d-grid gap-2">
-                  <button
-                    class="btn btn-success"
-                    type="button"
-                    (click)="assignPlanToUser(plan.id)"
-                  >
-                    Select this plan
-                  </button>
+
+                <div *ngIf="authenticatedUser.fk_id_pla != null">
+                  <div class="d-grid gap-2">
+                    <button
+                      class="btn btn-success"
+                      type="button"
+                      (click)="assignPlanToUser(plan.id)"
+                      *ngIf="plan.type != authenticatedUser.fk_id_pla.type"
+                    >
+                      <span> Change to this plan </span>
+                    </button>
+                  </div>
+                  <div class="d-grid gap-2">
+                    <button
+                      class="btn btn-warning"
+                      type="button"
+                      (click)="assignPlanToUser(plan.id)"
+                      *ngIf="plan.type == authenticatedUser.fk_id_pla.type"
+                    >
+                      <span> Current plan </span>
+                    </button>
+                  </div>
+                </div>
+                <div *ngIf="authenticatedUser.fk_id_pla == null">
+                  <div class="d-grid gap-2">
+                    <button
+                      class="btn btn-success"
+                      type="button"
+                      (click)="assignPlanToUser(plan.id)"
+                    >
+                      <span> Select this plan </span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -257,7 +303,9 @@
           >
             Close
           </button>
-          <button type="submit" class="btn btn-success">Save</button>
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+            Save
+          </button>
         </div>
       </form>
     </div>

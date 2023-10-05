@@ -6,10 +6,14 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MoviesServiceService {
-  url = 'https://api.sampleapis.com/movies/horror';
   constructor(private http: HttpClient) {}
+  url = 'https://api.sampleapis.com/movies';
 
-  getMovies(): Observable<any> {
-    return this.http.get<any>(this.url);
+  getMovies(genre: string): Observable<any> {
+    if (genre == 'cartoon') {
+      const newUrl = 'https://api.sampleapis.com/cartoons/cartoons2D';
+      return this.http.get<any>(newUrl);
+    }
+    return this.http.get<any>(this.url + '/' + genre);
   }
 }

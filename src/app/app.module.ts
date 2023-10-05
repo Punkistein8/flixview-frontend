@@ -19,6 +19,9 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { RoleComponentComponent } from './components/admin-page/role-component/role-component/role-component.component';
 import { PlanComponentComponent } from './components/admin-page/plan-component/plan-component/plan-component.component';
 import { UserflixComponentComponent } from './components/admin-page/userflix-component/userflix-component/userflix-component.component';
+import { FamilyMoviesComponent } from './components/movies-list/family-component/family-movies/family-movies.component';
+import { HorrorMoviesComponent } from './components/movies-list/horror-component/horror-movies/horror-movies.component';
+import { CartoonMoviesComponent } from './components/movies-list/cartoon-component/cartoon-movies/cartoon-movies.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,9 @@ import { UserflixComponentComponent } from './components/admin-page/userflix-com
     RoleComponentComponent,
     PlanComponentComponent,
     UserflixComponentComponent,
+    FamilyMoviesComponent,
+    HorrorMoviesComponent,
+    CartoonMoviesComponent,
   ],
   imports: [
     BrowserModule,

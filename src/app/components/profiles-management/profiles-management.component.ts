@@ -83,6 +83,7 @@ export class ProfilesManagementComponent {
             this.listOfProfiles = res.data;
             console.log('Profiles found for this user', this.listOfProfiles);
           } else {
+            this.listOfProfiles = res.data;
             console.log('No profiles found for this user', this.listOfProfiles);
           }
         },
@@ -153,6 +154,10 @@ export class ProfilesManagementComponent {
         if (!res.error) {
           this.toastr.success(res.message, 'Success');
           this.getProfilesListByUser();
+          this.newProfileForm.reset();
+          this.setUpdatedAuthenticatedUser();
+          this.authenticatedUser = this.getAuthenticatedUser();
+
           // setTimeout(() => {
           //   window.location.reload();
           // }, 500);
@@ -180,14 +185,41 @@ export class ProfilesManagementComponent {
         if (!res.error) {
           this.toastr.success(res.message, 'Success');
           localStorage.setItem('user', JSON.stringify(res.data));
-          setTimeout(() => {
-            window.location.reload();
-          }, 500);
+          this.setUpdatedAuthenticatedUser();
+          this.saberSiTienePlan();
+          this.authenticatedUser = this.getAuthenticatedUser();
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 500);
         } else {
           this.toastr.error(res.message, 'Error');
         }
       },
       (err) => {
+        this.toastr.error(err, 'Error');
+      }
+    );
+  }
+
+  deleteProfileById(id_pro: number) {
+    const profileToDelete = {
+      id_pro: id_pro,
+    };
+    this.profilesService.deleteProfileById(profileToDelete).subscribe(
+      (res) => {
+        if (!res.error) {
+          this.toastr.error(res.message, 'Deleted');
+          this.getProfilesListByUser();
+          this.newProfileForm.reset();
+          this.setUpdatedAuthenticatedUser();
+          this.authenticatedUser = this.getAuthenticatedUser();
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 500);
+        }
+      },
+      (err) => {
+        console.log('Error al eliminar el perfil ->', err);
         this.toastr.error(err, 'Error');
       }
     );
